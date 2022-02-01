@@ -1,3 +1,4 @@
+package chabernac.cdk;
 // package com.myorg;
 
 // import software.amazon.awscdk.App;
