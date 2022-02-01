@@ -13,9 +13,9 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         responseEvent.setStatusCode(200);
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "text/plain");
+        headers.put("Content-Type", "application/json");
         responseEvent.setHeaders(headers);
-        responseEvent.setBody("test response");
+        responseEvent.setBody("{'reply':'Hello from lambda'}");
         return responseEvent;
     }
 
