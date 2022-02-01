@@ -46,17 +46,17 @@ public class LambdaAPIGateway extends Stack {
 
         bucket.grantReadWrite(handler);
 
+
+
         RestApi api = RestApi.Builder.create(this, "LambdaAPI")
                 .restApiName("Lambda test service").description("CDK Test API")
                 .build();
-
         LambdaIntegration testHandlerIntegration = LambdaIntegration.Builder.create(handler)
                 .requestTemplates(new HashMap<String, String>() {
                     {
                         put("application/json", "{ \"statusCode\": \"200\" }");
                     }
                 }).build();
-
         api.getRoot().addMethod("GET", testHandlerIntegration);
     }
 
