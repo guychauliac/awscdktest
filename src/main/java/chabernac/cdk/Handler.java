@@ -10,14 +10,13 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
-        APIGatewayProxyResponseEvent apiGatewayProxyResponseEvent = new APIGatewayProxyResponseEvent();
-
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         responseEvent.setStatusCode(200);
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "text/plain");
+        responseEvent.setHeaders(headers);
         responseEvent.setBody("test response");
-        return apiGatewayProxyResponseEvent;
+        return responseEvent;
     }
 
 }

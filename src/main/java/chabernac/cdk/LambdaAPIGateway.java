@@ -1,5 +1,7 @@
 package chabernac.cdk;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -7,6 +9,7 @@ import software.amazon.awscdk.services.apigateway.LambdaIntegration;
 import software.amazon.awscdk.services.apigateway.RestApi;
 import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.constructs.Construct;
 
@@ -20,9 +23,20 @@ public class LambdaAPIGateway extends Stack {
 
         Bucket bucket = new Bucket(this, "cdk.lambda.test");
 
-        Function handler = Function.Builder.create(this, "WidgetHandler")
-                .runtime(software.amazon.awscdk.services.lambda.Runtime.JAVA_8_CORRETTO)
-                .code(Code.fromAsset("C:\\Data\\git\\cdktest\\target\\cdktest-jar-with-dependencies.jar"))
+        System.out.println("Current path: " + new File(".").getAbsolutePath());
+
+        // final LayerVersion layer = new LayerVersion(this, "layer", LayerVersionProps.builder()
+        // .code(Code.fromAsset("../layer/target/bundle"))
+        // .compatibleRuntimes(Arrays.asList(software.amazon.awscdk.services.lambda.Runtime.JAVA_8))
+        // .build());
+
+        Function handler = Function.Builder.create(this, "CDKTestHandler")
+                .runtime(software.amazon.awscdk.services.lambda.Runtime.JAVA_8)
+                .code(Code.fromAsset("target/cdktest-jar-with-dependencies.jar"))
+                .layers(Arrays.asList(LayerVersion.Builder.create(this, "CDKTestLayer")
+                        .code(Code.fromAsset("target/cdktest-jar-with-dependencies.jar"))
+                        .compatibleRuntimes(Arrays.asList(software.amazon.awscdk.services.lambda.Runtime.JAVA_8))
+                        .build()))
                 .handler("chabernac.cdk.Handler")
                 .environment(new HashMap<String, String>() {
                     {
@@ -36,13 +50,17 @@ public class LambdaAPIGateway extends Stack {
                 .restApiName("Lambda test service").description("CDK Test API")
                 .build();
 
-        LambdaIntegration getWidgetsIntegration = LambdaIntegration.Builder.create(handler)
+        LambdaIntegration testHandlerIntegration = LambdaIntegration.Builder.create(handler)
                 .requestTemplates(new HashMap<String, String>() {
                     {
                         put("application/json", "{ \"statusCode\": \"200\" }");
                     }
                 }).build();
 
-        api.getRoot().addMethod("GET", getWidgetsIntegration);
+        api.getRoot().addMethod("GET", testHandlerIntegration);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Current path: " + new File(".").getAbsolutePath());
     }
 }
