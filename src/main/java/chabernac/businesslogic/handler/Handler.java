@@ -1,4 +1,4 @@
-package chabernac.cdk;
+package chabernac.businesslogic.handler;
 
 import java.util.HashMap;
 import com.amazonaws.services.lambda.runtime.Context;

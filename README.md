@@ -21,3 +21,4 @@ https://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-wi
 https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html
 https://stackoverflow.com/questions/58477233/how-do-i-reference-my-lambda-from-code-in-aws-cloud-development-kit
 https://kerrywilson.dev/post/2021/08-22-deploying-java-lambda-cdk-maven/
+https://medium.com/abn-amro-developer/aws-cdk-my-experience-and-the-benefits-f2406a06a95f
