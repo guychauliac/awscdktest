@@ -31,11 +31,11 @@ public class LambdaAPIGateway extends Stack {
         // .build());
 
         Function handler = Function.Builder.create(this, "CDKTestHandler")
-                .runtime(software.amazon.awscdk.services.lambda.Runtime.JAVA_8)
+                .runtime(software.amazon.awscdk.services.lambda.Runtime.JAVA_8_CORRETTO)
                 .code(Code.fromAsset("target/cdktest-jar-with-dependencies.jar"))
                 .layers(Arrays.asList(LayerVersion.Builder.create(this, "CDKTestLayer")
                         .code(Code.fromAsset("target/cdktest-jar-with-dependencies.jar"))
-                        .compatibleRuntimes(Arrays.asList(software.amazon.awscdk.services.lambda.Runtime.JAVA_8))
+                        .compatibleRuntimes(Arrays.asList(software.amazon.awscdk.services.lambda.Runtime.JAVA_8_CORRETTO))
                         .build()))
                 .handler("chabernac.cdk.Handler")
                 .environment(new HashMap<String, String>() {
