@@ -4,29 +4,23 @@ import chabernac.cdk.builder.stack.LambdaFunction;
 import chabernac.cdk.builder.stack.LambdaOnAPIGatewayStackBuilder;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.StackProps;
 
 public class CdktestApp {
     public static void main(final String[] args) {
         App app = new App();
 
-        new LambdaOnAPIGatewayStackBuilder("LambdaAPIGateway", "cdktest-jar-with-dependencies.jar")
+        new LambdaOnAPIGatewayStackBuilder("LambdaAPIGateway")
+                .setStackDescription("Lambda on Api Gateway")
                 .setRestAPIDescription("API Description")
-                .setRestAPIId("Rest API Id")
                 .setRestAPIName("API Name")
-                .addFunction(new LambdaFunction("chabernac.businesslogic.handler.Handler", "/handler/test", "GET"))
-                .build(app, getStackPropertiesForAccount("829867751173"));
-
-        app.synth();
-    }
-
-    private static StackProps getStackPropertiesForAccount(String string) {
-        return StackProps.builder().env(
-                Environment.builder()
+                .setJarInTargetFolder("cdktest-jar-with-dependencies.jar")
+                .setEnvironment(Environment.builder()
                         .account("829867751173")
                         .region("eu-central-1")
                         .build())
-                .build();
-    }
+                .addFunction(new LambdaFunction("chabernac.businesslogic.handler.Handler", "/handler/test", "GET"))
+                .build(app);
 
+        app.synth();
+    }
 }
