@@ -8,6 +8,7 @@ import chabernac.cdk.builder.CustomRestAPIBuilder;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.IFunction;
 import software.constructs.Construct;
 
@@ -19,7 +20,21 @@ public class LambdaOnAPIGatewayStackBuilder implements IStackBuilder {
     private String restAPIDescription;
     private final Set<LambdaFunction> functions = new HashSet<>();
     private Environment environment;
-    private String applicationName;
+
+    private Stack stack;
+    private RestApi api;
+
+    public Stack getStack() {
+        return stack;
+    }
+
+    public RestApi getCreatedRestApi() {
+        return api;
+    }
+
+    public Set<IFunction> getFunctions() {
+        return new HashSet<>();
+    }
 
     public LambdaOnAPIGatewayStackBuilder(String stackName) {
         super();
@@ -64,11 +79,14 @@ public class LambdaOnAPIGatewayStackBuilder implements IStackBuilder {
     }
 
     private IFunction buildFunction(Stack stack, LambdaFunction function) {
-        return new CustomFunctionBuilder(stack, "Function")
+        CustomFunctionBuilder builder = new CustomFunctionBuilder(stack, "Function")
                 .runtime(function.getRuntime())
                 .jarInTargetFolder(jarInTargetFolder)
-                .handler(function.getHandler())
-                .build();
+                .handler(function.getHandler());
+        function.getDecorator().decorateDuringBuild(builder);
+        Function lambdaFunction = builder.build();
+        function.getDecorator().decorateAfterBuild(lambdaFunction);
+        return lambdaFunction;
     }
 
     public LambdaOnAPIGatewayStackBuilder setRestAPIName(String restAPIName) {

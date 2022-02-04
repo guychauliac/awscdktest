@@ -6,9 +6,10 @@ public class LambdaFunction {
     private final String handler;
     private final String relativeEndPoint;
     private final String httpMethod;
-    private Runtime      runtime = Runtime.JAVA_8_CORRETTO;
+    private Runtime runtime = Runtime.JAVA_8_CORRETTO;
+    private ILambdaFunctionDecorator decorator = new NoLambdaDecoreator();
 
-    public LambdaFunction( String handler, String relativeEndPoint, String httpMethod ) {
+    public LambdaFunction(String handler, String relativeEndPoint, String httpMethod) {
         super();
         this.handler = handler;
         this.relativeEndPoint = relativeEndPoint;
@@ -27,7 +28,7 @@ public class LambdaFunction {
         return httpMethod;
     }
 
-    public LambdaFunction setRuntime( Runtime runtime ) {
+    public LambdaFunction setRuntime(Runtime runtime) {
         this.runtime = runtime;
         return this;
     }
@@ -35,5 +36,16 @@ public class LambdaFunction {
     public Runtime getRuntime() {
         return runtime;
     }
+
+    public LambdaFunction setDecorator(ILambdaFunctionDecorator decorator) {
+        this.decorator = decorator;
+        return this;
+    }
+
+    public ILambdaFunctionDecorator getDecorator() {
+        return decorator;
+    }
+
+
 
 }
