@@ -1,4 +1,4 @@
-package chabernac.cdk.builder.stack;
+package chabernac.cdk.builder.decorator;
 
 import chabernac.cdk.builder.CustomFunctionBuilder;
 import software.amazon.awscdk.services.lambda.Function;

@@ -1,5 +1,6 @@
 package chabernac.cdk.builder.stack;
 
+import chabernac.cdk.builder.decorator.ILambdaFunctionDecorator;
 import software.amazon.awscdk.services.lambda.Runtime;
 
 public class LambdaFunction {
