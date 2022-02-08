@@ -12,9 +12,9 @@ public class CdktestApp {
     public static void main( final String[] args ) {
         App app = new App();
 
-        Stack stack = Stack.Builder.create( app, "Lambda on Api Gateway" )
-            .stackName( "Lambda on Api Gateway" )
-            .description( "Lambda on Api Gateway" )
+        Stack stack = Stack.Builder.create( app, "Lambda Api GTW Stack id" )
+            .stackName( "LambdaAPIGateway" )
+            .description( "Lambda on Api Gateway - description" )
             .env(
                 Environment.builder()
                     .account( "829867751173" )
