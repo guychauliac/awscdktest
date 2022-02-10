@@ -1,6 +1,7 @@
 package chabernac.cdk;
 
 import chabernac.cdk.builder.decorator.AccessToBucketLambdaDecorator;
+import chabernac.cdk.builder.decorator.LambdaProvisionedConcurrencyDecorator;
 import chabernac.cdk.builder.stack.LambdaFunction;
 import chabernac.cdk.builder.stack.LambdaOnAPIGatewayInfraBuilder;
 import software.amazon.awscdk.App;
@@ -21,15 +22,16 @@ public class CdktestApp {
                     .region( "eu-central-1" )
                     .build() )
             .build();
-        
-        
-        Bucket bucket = new Bucket(stack, "cdk.lambda.test");
+
+        Bucket bucket = new Bucket( stack, "cdk.lambda.test" );
 
         new LambdaOnAPIGatewayInfraBuilder( "LambdaAPIGateway" )
             .setRestAPIDescription( "API Description" )
             .setRestAPIName( "API Name" )
             .setJarInTargetFolder( "cdktest-jar-with-dependencies.jar" )
-            .addFunction( new LambdaFunction( "chabernac.businesslogic.handler.Handler", "/handler/test", "GET" ).setDecorator( new AccessToBucketLambdaDecorator( bucket ) ) )
+            .addFunction( new LambdaFunction( "chabernac.businesslogic.handler.Handler", "/handler/test", "GET" )
+                .addDecorator( new AccessToBucketLambdaDecorator( bucket ) )
+                .addDecorator( new LambdaProvisionedConcurrencyDecorator( 1 ) ))
             .build( stack );
 
         app.synth();

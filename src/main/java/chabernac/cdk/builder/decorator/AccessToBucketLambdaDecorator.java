@@ -1,7 +1,7 @@
 package chabernac.cdk.builder.decorator;
 
 import chabernac.cdk.builder.CustomFunctionBuilder;
-import software.amazon.awscdk.services.lambda.Function;
+import software.amazon.awscdk.services.lambda.IFunction;
 import software.amazon.awscdk.services.s3.Bucket;
 
 public class AccessToBucketLambdaDecorator implements ILambdaFunctionDecorator {
@@ -19,7 +19,7 @@ public class AccessToBucketLambdaDecorator implements ILambdaFunctionDecorator {
     }
 
     @Override
-    public void decorateAfterBuild(Function lambda) {
+    public void decorateAfterBuild(IFunction lambda) {
         bucket.grantReadWrite(lambda);
     }
 

@@ -20,13 +20,16 @@ import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.ICodeSigningConfig;
 import software.amazon.awscdk.services.lambda.IDestination;
 import software.amazon.awscdk.services.lambda.IEventSource;
+import software.amazon.awscdk.services.lambda.IFunction;
 import software.amazon.awscdk.services.lambda.ILayerVersion;
 import software.amazon.awscdk.services.lambda.LambdaInsightsVersion;
 import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.LogRetentionRetryOptions;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.Tracing;
+import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.lambda.VersionOptions;
+import software.amazon.awscdk.services.lambda.VersionProps;
 import software.amazon.awscdk.services.logs.RetentionDays;
 import software.amazon.awscdk.services.sqs.IQueue;
 import software.constructs.Construct;
@@ -37,10 +40,30 @@ public class CustomFunctionBuilder {
     private final Construct           scope;
     private Runtime                   runtime;
     private final Map<String, String> environmentVariables = new HashMap<String, String>();
+    private VersionProps.Builder      versionPropsBuilder  = null;
 
     public CustomFunctionBuilder( Construct scope, String id ) {
         this.scope = scope;
         builder = Function.Builder.create( scope, id );
+    }
+
+    public IFunction build() {
+        IFunction function = builder.build();
+
+        if ( versionPropsBuilder != null ) {
+            versionPropsBuilder.lambda( function );
+            VersionProps versionprop = versionPropsBuilder.build();
+            function = new Version( scope, "versionId", versionprop );
+        }
+
+        return function;
+    }
+
+    public VersionProps.Builder getVersionPropsBuilder() {
+        if ( versionPropsBuilder == null ) {
+            versionPropsBuilder = new VersionProps.Builder();
+        }
+        return versionPropsBuilder;
     }
 
     public CustomFunctionBuilder jarInTargetFolder( String jar ) {
@@ -154,10 +177,6 @@ public class CustomFunctionBuilder {
         return this;
     }
 
-    public Function build() {
-        return builder.build();
-    }
-
     public CustomFunctionBuilder deadLetterQueue( IQueue deadLetterQueue ) {
         builder.deadLetterQueue( deadLetterQueue );
         return this;
@@ -214,7 +233,7 @@ public class CustomFunctionBuilder {
 
     public CustomFunctionBuilder profiling( Boolean profiling ) {
         builder.profiling( profiling );
-        return this; 
+        return this;
     }
 
     public CustomFunctionBuilder profilingGroup( IProfilingGroup profilingGroup ) {

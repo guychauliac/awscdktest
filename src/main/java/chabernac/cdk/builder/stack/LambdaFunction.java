@@ -1,16 +1,20 @@
 package chabernac.cdk.builder.stack;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import chabernac.cdk.builder.decorator.ILambdaFunctionDecorator;
 import software.amazon.awscdk.services.lambda.Runtime;
 
 public class LambdaFunction {
-    private final String handler;
-    private final String relativeEndPoint;
-    private final String httpMethod;
-    private Runtime runtime = Runtime.JAVA_8_CORRETTO;
-    private ILambdaFunctionDecorator decorator = new NoLambdaDecoreator();
+    private final String                         handler;
+    private final String                         relativeEndPoint;
+    private final String                         httpMethod;
+    private Runtime                              runtime    = Runtime.JAVA_8_CORRETTO;
+    private final List<ILambdaFunctionDecorator> decorators = new ArrayList<>();
 
-    public LambdaFunction(String handler, String relativeEndPoint, String httpMethod) {
+    public LambdaFunction( String handler, String relativeEndPoint, String httpMethod ) {
         super();
         this.handler = handler;
         this.relativeEndPoint = relativeEndPoint;
@@ -29,7 +33,7 @@ public class LambdaFunction {
         return httpMethod;
     }
 
-    public LambdaFunction setRuntime(Runtime runtime) {
+    public LambdaFunction setRuntime( Runtime runtime ) {
         this.runtime = runtime;
         return this;
     }
@@ -38,15 +42,13 @@ public class LambdaFunction {
         return runtime;
     }
 
-    public LambdaFunction setDecorator(ILambdaFunctionDecorator decorator) {
-        this.decorator = decorator;
+    public LambdaFunction addDecorator( ILambdaFunctionDecorator decorator ) {
+        this.decorators.add( decorator );
         return this;
     }
 
-    public ILambdaFunctionDecorator getDecorator() {
-        return decorator;
+    public List<ILambdaFunctionDecorator> getDecorators() {
+        return Collections.unmodifiableList( decorators );
     }
-
-
 
 }

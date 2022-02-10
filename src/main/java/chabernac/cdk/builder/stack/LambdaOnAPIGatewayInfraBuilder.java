@@ -8,8 +8,12 @@ import chabernac.cdk.builder.CustomLambdaIntegrationBuilder;
 import chabernac.cdk.builder.CustomRestAPIBuilder;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.services.apigateway.RestApi;
+import software.amazon.awscdk.services.lambda.Alias;
+import software.amazon.awscdk.services.lambda.AliasProps;
 import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.IFunction;
+import software.amazon.awscdk.services.lambda.Version;
+import software.amazon.awscdk.services.lambda.VersionProps;
 
 public class LambdaOnAPIGatewayInfraBuilder implements IInfraBuilder<RestApi> {
     private final String              stackName;
@@ -70,9 +74,10 @@ public class LambdaOnAPIGatewayInfraBuilder implements IInfraBuilder<RestApi> {
             .runtime( function.getRuntime() )
             .jarInTargetFolder( jarInTargetFolder )
             .handler( function.getHandler() );
-        function.getDecorator().decorateDuringBuild( builder );
-        Function lambdaFunction = builder.build();
-        function.getDecorator().decorateAfterBuild( lambdaFunction );
+        function.getDecorators().stream().forEach( decorator -> decorator.decorateDuringBuild( builder ) );
+        IFunction lambdaFunction = builder.build();
+        function.getDecorators().stream().forEach( decorator -> decorator.decorateAfterBuild( lambdaFunction ) );
+
         return lambdaFunction;
     }
 
