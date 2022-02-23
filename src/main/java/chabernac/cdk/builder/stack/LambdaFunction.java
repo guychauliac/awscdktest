@@ -13,6 +13,7 @@ public class LambdaFunction {
     private final String                         httpMethod;
     private Runtime                              runtime    = Runtime.JAVA_8_CORRETTO;
     private final List<ILambdaFunctionDecorator> decorators = new ArrayList<>();
+    private Number                               memoryInMB = 256;
 
     public LambdaFunction( String handler, String relativeEndPoint, String httpMethod ) {
         super();
@@ -49,6 +50,15 @@ public class LambdaFunction {
 
     public List<ILambdaFunctionDecorator> getDecorators() {
         return Collections.unmodifiableList( decorators );
+    }
+
+    public LambdaFunction setMemoryInMB( Number memoryInMB ) {
+        this.memoryInMB = memoryInMB;
+        return this;
+    }
+
+    public Number getMemoryInMB() {
+        return memoryInMB;
     }
 
 }

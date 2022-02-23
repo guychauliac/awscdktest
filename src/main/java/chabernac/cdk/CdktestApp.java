@@ -29,9 +29,12 @@ public class CdktestApp {
             .setRestAPIDescription( "API Description" )
             .setRestAPIName( "API Name" )
             .setJarInTargetFolder( "cdktest-jar-with-dependencies.jar" )
-            .addFunction( new LambdaFunction( "chabernac.businesslogic.handler.Handler", "/handler/test", "GET" )
-                .addDecorator( new AccessToBucketLambdaDecorator( bucket ) )
-                .addDecorator( new LambdaProvisionedConcurrencyDecorator( 1 ) ))
+            .addFunction(
+                new LambdaFunction( "chabernac.businesslogic.handler.Handler", "/handler/test", "GET" )
+                    .setMemoryInMB( 256 )
+                    .addDecorator( new AccessToBucketLambdaDecorator( bucket ) )
+            // .addDecorator( new LambdaProvisionedConcurrencyDecorator( 0 ) )
+            )
             .build( stack );
 
         app.synth();

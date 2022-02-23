@@ -2,18 +2,12 @@ package chabernac.cdk.builder.stack;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import chabernac.cdk.builder.CustomFunctionBuilder;
 import chabernac.cdk.builder.CustomLambdaIntegrationBuilder;
 import chabernac.cdk.builder.CustomRestAPIBuilder;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.services.apigateway.RestApi;
-import software.amazon.awscdk.services.lambda.Alias;
-import software.amazon.awscdk.services.lambda.AliasProps;
-import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.IFunction;
-import software.amazon.awscdk.services.lambda.Version;
-import software.amazon.awscdk.services.lambda.VersionProps;
 
 public class LambdaOnAPIGatewayInfraBuilder implements IInfraBuilder<RestApi> {
     private final String              stackName;
@@ -72,6 +66,7 @@ public class LambdaOnAPIGatewayInfraBuilder implements IInfraBuilder<RestApi> {
     private IFunction buildFunction( Stack stack, LambdaFunction function ) {
         CustomFunctionBuilder builder = new CustomFunctionBuilder( stack, "Function" )
             .runtime( function.getRuntime() )
+            .memorySize(function.getMemoryInMB())
             .jarInTargetFolder( jarInTargetFolder )
             .handler( function.getHandler() );
         function.getDecorators().stream().forEach( decorator -> decorator.decorateDuringBuild( builder ) );
