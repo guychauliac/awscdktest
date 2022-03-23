@@ -6,7 +6,7 @@ jobs:
     steps:
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: guychauliac/aws-cdk-github-actions@v3.0.0
         
       - name: cdk diff
         uses: chabernac/cdk@v2
@@ -19,7 +19,7 @@ jobs:
           AWS_DEFAULT_REGION: 'eu-central-1'
 
       - name: cdk deploy
-        uses: chabernac/cdk@v2
+        uses: guychauliac/aws-cdk-github-actions@v3.0.0
         with:
           cdk_subcommand: 'deploy'
           cdk_stack: 'stack1'
@@ -31,7 +31,7 @@ jobs:
           AWS_DEFAULT_REGION: 'eu-central-1'
 
       - name: cdk synth
-        uses: chabernac/cdk@v2
+        uses: guychauliac/aws-cdk-github-actions@v3.0.0
         with:
           cdk_subcommand: 'synth'
           cdk_version: '1.16.2'
