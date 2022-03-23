@@ -2,7 +2,7 @@ on: [push]
 
 jobs:
   aws_cdk:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
 
       - name: cdk diff
