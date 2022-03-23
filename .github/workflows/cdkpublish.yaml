@@ -6,10 +6,10 @@ jobs:
     steps:
 
       - name: Checkout repository
-        uses: guychauliac/aws-cdk-github-actions@v3.0.0
+        uses: actions/checkout@v2
         
       - name: cdk diff
-        uses: chabernac/cdk@v2
+        uses: guychauliac/aws-cdk-github-actions@v3.0.0
         with:
           cdk_subcommand: 'diff'
           actions_comment: true
