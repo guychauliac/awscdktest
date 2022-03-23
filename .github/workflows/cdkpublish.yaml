@@ -22,7 +22,6 @@ jobs:
         uses: guychauliac/aws-cdk-github-actions@v3.0.0
         with:
           cdk_subcommand: 'deploy'
-          cdk_stack: 'stack1'
           cdk_args: '--require-approval never'
           actions_comment: false
         env:
